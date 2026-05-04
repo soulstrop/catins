@@ -253,21 +253,53 @@
                         <h3>Compliance Collision</h3>
                         <p>Old-school actuarial math and modern Neural Networks speak different languages, held together by fragile, hand-coded scripts that break under regulatory pressure.</p>
                     </div>
-                </div>
-                <div style="background: var(--bg-accent); height: 400px; border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border);">
-                    <!-- Placeholder for the "Rocket" Visual mentioned in prompt -->
-                    <svg viewBox="0 0 200 200" width="300" height="300">
-                        <defs>
-                            <linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:var(--cyan);stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:var(--indigo);stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M100 20 L130 140 L100 130 L70 140 Z" fill="url(#rocketGrad)" opacity="0.8" />
-                        <rect x="85" y="145" width="30" height="40" fill="var(--text-muted)" rx="2" />
-                        <text x="88" y="165" font-size="6" fill="var(--bg-dark)" font-weight="bold">COMPLIANCE</text>
-                        <circle cx="100" cy="100" r="60" fill="none" stroke="var(--cyan)" stroke-dasharray="5,5" />
-                    </svg>
+                    <div style="background: var(--bg-accent); padding: 2rem; border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border);">
+                        <div class="mermaid">
+
+                            %%{
+                              init: {
+                                'theme': 'base',
+                                'themeVariables': {
+                                  'fontFamily': '"Inter", -apple-system, sans-serif',
+                                  'primaryColor': '#0f172a',
+                                  'primaryBorderColor': 'rgba(255, 255, 255, 0.1)',
+                                  'primaryTextColor': '#f8fafc',
+                                  'lineColor': '#6366f1',
+                                  'clusterBkg': '#020617',
+                                  'clusterBorder': '#ffffffla',
+                                  'edgeLabelBackground': '#020617',
+                                  'tertiaryTextColor': '#94a3b8'
+                                }
+                              }
+                            }%%
+                            graph TB
+                                classDef default fill:#0f172a,stroke:#ffffff1a,stroke-width:1px,color:#f8fafc,rx:8px,ry:8px
+                                classDef highlight fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#f8fafc,rx:8px,ry:8px
+                                classDef valid fill:#22d3ee1a,stroke:#22d3ee,stroke-width:1px,color:#22d3ee,rx:20px,ry:20px
+                                classDef violation fill:#dc26261a,stroke:#dc2626,stroke-width:1px,color:#f87171,rx:8px,ry:8px
+
+                                subgraph Learn_Category ["(Learn, ⊗, 1)"]
+                                   D[Deterministic]
+                                    L[LLM-Produced]
+                                    D --> F[f ⊗ g]
+                                    L --> F
+                                end
+
+                                F --> P[Proposal P]
+
+                                subgraph Env_Comonad ["W_M Comonad Context"]
+                                    P --> WP["W_M(P)"]
+                                    M["(M, ⊕, e)"] --- WP
+                                end
+
+                                WP -- "validate (co-Kleisli)" --> C["Contract(P)"]
+                                WP -- "eval_M" --> V["List(Violation)"]
+
+                                class F,WP highlight
+                                class C valid
+                                class V violation
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -347,6 +379,9 @@
             </div>
         </div>
     </footer>
-
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
 </body>
 </html>
